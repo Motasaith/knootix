@@ -37,7 +37,7 @@
     --avatar-bg:#1d5a40;
     --avatar-ink:#bfe9d3;
     --line:rgba(238,243,238,.13);
-    --line-soft:rgba(238,243,238,.07);
+    --line-soft:rgba(238,243,238,.06);
     --stroke:rgba(238,243,238,.28);
     --header-bg:rgba(10,15,13,.96);
     --thumb:#20302a;
@@ -58,7 +58,7 @@
     --avatar-bg:#d8ecdf;
     --avatar-ink:#14563c;
     --line:rgba(16,21,18,.16);
-    --line-soft:rgba(16,21,18,.08);
+    --line-soft:rgba(16,21,18,.06);
     --stroke:rgba(16,21,18,.32);
     --header-bg:rgba(242,243,237,.96);
     --thumb:#c6d0c7;
@@ -125,23 +125,11 @@
   .btn-ghost{background:transparent;color:var(--ink);border-color:var(--line)}
   .btn-ghost:hover{border-color:var(--green);color:var(--green)}
 
-  /* ---------- infinity construction sheets ---------- */
-  .loop{position:absolute;pointer-events:none;z-index:1;overflow:visible}
-  .loop-frame{fill:none;stroke:var(--line-soft);stroke-width:1}
-  .loop-axis{fill:none;stroke:var(--line-soft);stroke-width:1}
-  .loop-cross{stroke:var(--green);stroke-width:1;opacity:.65;fill:none}
-  .loop-mark{fill:none;stroke:var(--green);stroke-width:2;stroke-linecap:round}
-  .loop-pen{fill:var(--green)}
-  .loop-anno{font-family:var(--mono);font-size:10px;letter-spacing:1.5px;fill:var(--muted)}
-  .loop-hero{right:calc(var(--pad)*-0.08);top:44%;width:min(48vw,680px);transform:translateY(-50%)}
-  .loop-cta{right:-6%;top:50%;width:min(55vw,760px);transform:translateY(-50%);opacity:.6}
-  @media(max-width:1000px){
-    .loop-hero{width:115vw;right:-25vw;top:38%;opacity:.3}
-    .loop-cta{width:125vw;right:-35vw;opacity:.25}
-  }
-
   /* ---------- hero ---------- */
   .hero{position:relative;min-height:100svh;display:flex;flex-direction:column;justify-content:flex-end;padding:120px var(--pad) 0;overflow:hidden}
+  .hero::before{content:"";position:absolute;inset:0;z-index:0;pointer-events:none;
+    background-image:linear-gradient(var(--line-soft) 1px,transparent 1px),linear-gradient(90deg,var(--line-soft) 1px,transparent 1px);
+    background-size:76px 76px}
   .hero-inner{position:relative;z-index:2;display:grid;grid-template-columns:repeat(12,1fr);gap:24px;align-items:end;flex:1;padding-bottom:clamp(40px,6vh,70px)}
   .hero-title{grid-column:1/13;font-family:var(--display);text-transform:uppercase;font-size:clamp(2.6rem,9.2vw,8.6rem);line-height:.94;letter-spacing:-.01em}
   @media(min-width:1000px){.hero-title{grid-column:1/9}}
@@ -170,7 +158,7 @@
   body.loaded .hero-badge{opacity:1}
   @keyframes spin{to{transform:rotate(360deg)}}
   .hero-badge text{font-family:var(--mono);font-size:8.6px;letter-spacing:2.2px;fill:var(--muted)}
-  .hero-badge .badge-oo{fill:none;stroke:var(--green);stroke-width:2;vector-effect:non-scaling-stroke;stroke-linecap:round}
+  .hero-badge .star{font-family:var(--display);font-size:26px;fill:var(--green)}
   @media(max-width:1000px){.hero-badge{display:none}}
 
   /* ---------- marquees ---------- */
@@ -288,12 +276,28 @@
   .sl-btn:hover{border-color:var(--green);color:var(--green)}
   .sl-count{font-family:var(--mono);font-size:.75rem;color:var(--muted);letter-spacing:.15em}
 
-  /* ---------- cta ---------- */
+  /* ---------- cta + deploy terminal ---------- */
   .cta{position:relative;overflow:hidden}
-  .cta h2{font-family:var(--display);text-transform:uppercase;font-size:clamp(2.4rem,7vw,6.4rem);line-height:1;max-width:12em;position:relative;z-index:2}
+  .cta-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:clamp(40px,6vw,90px);align-items:center}
+  @media(max-width:960px){.cta-grid{grid-template-columns:1fr}}
+  .cta h2{font-family:var(--display);text-transform:uppercase;font-size:clamp(2.4rem,6.4vw,5.6rem);line-height:1;position:relative;z-index:2}
   .cta h2 em{font-family:var(--serif);font-style:italic;text-transform:none;color:var(--green);font-weight:600}
-  .cta p{color:var(--muted);margin:28px 0 36px;max-width:46ch;position:relative;z-index:2}
-  .cta-row{display:flex;gap:16px;flex-wrap:wrap;position:relative;z-index:2}
+  .cta .cta-copy p{color:var(--muted);margin:26px 0 34px;max-width:46ch}
+  .cta-row{display:flex;gap:16px;flex-wrap:wrap}
+  .term{border:1px solid var(--line);background:var(--bg2);border-radius:4px;overflow:hidden;box-shadow:0 30px 60px rgba(0,0,0,.18);transition:background-color .45s ease}
+  html[data-theme="light"] .term{box-shadow:0 30px 60px rgba(16,21,18,.12)}
+  .term-bar{display:flex;align-items:center;gap:7px;padding:12px 16px;border-bottom:1px solid var(--line)}
+  .term-dot{width:10px;height:10px;border-radius:50%;background:var(--line)}
+  .term-dot.g{background:var(--green)}
+  .term-url{margin-left:10px;font-family:var(--mono);font-size:.7rem;letter-spacing:.1em;color:var(--muted)}
+  .term-body{padding:22px 20px 26px;font-family:var(--mono);font-size:.8rem;line-height:2.1;min-height:236px}
+  .term-line{opacity:0;transform:translateY(6px);transition:opacity .35s ease,transform .35s ease;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .term-line.on{opacity:1;transform:none}
+  .t-p{color:var(--green)}
+  .t-ok{color:var(--green)}
+  .t-dim{color:var(--muted)}
+  .caret{display:inline-block;width:8px;height:13px;background:var(--green);vertical-align:-2px;animation:blink 1s steps(1) infinite}
+  @keyframes blink{50%{opacity:0}}
 
   /* ---------- footer ---------- */
   footer{border-top:1px solid var(--line);padding:clamp(50px,7vw,90px) var(--pad) 0}
@@ -320,10 +324,11 @@
     .h-line>span{transform:none}
     .hero-aside,.hero-badge{opacity:1;transform:none}
     [data-reveal]{opacity:1;transform:none}
+    .term-line{opacity:1;transform:none}
   }
 </style>
 <noscript><style>
-  .h-line>span{transform:none}.hero-aside,.hero-badge{opacity:1;transform:none}[data-reveal]{opacity:1;transform:none}
+  .h-line>span{transform:none}.hero-aside,.hero-badge{opacity:1;transform:none}[data-reveal]{opacity:1;transform:none}.term-line{opacity:1;transform:none}
 </style></noscript>
 </head>
 <body>
@@ -361,18 +366,6 @@
 
   <!-- HERO -->
   <section class="hero">
-    <svg class="loop loop-hero" viewBox="0 0 600 300" data-cx="300" data-cy="150" data-a="268" data-steps="240" aria-hidden="true">
-      <rect class="loop-frame" x="32" y="55" width="536" height="190"/>
-      <path class="loop-axis" d="M14 150h572M300 40v220"/>
-      <path class="loop-cross" d="M150 144v12M144 150h12"/>
-      <path class="loop-cross" d="M450 144v12M444 150h12"/>
-      <path class="lem loop-mark"/>
-      <circle class="loop-pen" r="4" opacity="0"/>
-      <text class="loop-anno" x="32" y="40">fig. 01</text>
-      <text class="loop-anno" x="568" y="40" text-anchor="end">lemniscate</text>
-      <text class="loop-anno" x="32" y="270">a = 268</text>
-      <text class="loop-anno" x="568" y="270" text-anchor="end">the kn∞tix mark</text>
-    </svg>
     <div class="hero-inner">
       <h1 class="hero-title">
         <span class="h-line"><span>We craft</span></span>
@@ -392,9 +385,7 @@
       <svg viewBox="0 0 100 100">
         <defs><path id="circ" d="M50,50 m-40,0 a40,40 0 1,1 80,0 a40,40 0 1,1 -80,0"/></defs>
         <text><textPath href="#circ">KNOOTIX STUDIO · LAHORE · EST 2021 ·&#160;</textPath></text>
-        <svg class="badge-mid" x="34" y="42" width="32" height="16" viewBox="0 0 64 32" data-cx="32" data-cy="16" data-a="29" data-steps="100">
-          <path class="lem badge-oo"/>
-        </svg>
+        <text class="star" x="50" y="59" text-anchor="middle">*</text>
       </svg>
     </div>
     <div class="hero-foot">
@@ -633,27 +624,27 @@
 
   <!-- CTA -->
   <section id="contact" class="section cta">
-    <svg class="loop loop-cta" viewBox="0 0 600 300" data-cx="300" data-cy="150" data-a="268" data-steps="240" aria-hidden="true">
-      <rect class="loop-frame" x="32" y="55" width="536" height="190"/>
-      <path class="loop-axis" d="M14 150h572M300 40v220"/>
-      <path class="loop-cross" d="M150 144v12M144 150h12"/>
-      <path class="loop-cross" d="M450 144v12M444 150h12"/>
-      <path class="lem loop-mark"/>
-      <circle class="loop-pen" r="4" opacity="0"/>
-      <text class="loop-anno" x="32" y="40">fig. 02</text>
-      <text class="loop-anno" x="568" y="40" text-anchor="end">loop, forever</text>
-      <text class="loop-anno" x="32" y="270">a = 268</text>
-      <text class="loop-anno" x="568" y="270" text-anchor="end">start · ship · scale</text>
-    </svg>
     <div class="sec-head" data-reveal>
       <span class="idx">(07)</span>
       <h2 style="font-size:clamp(1.4rem,3vw,2.4rem)">Next project</h2>
+      <span class="note">Status: accepting new work</span>
     </div>
-    <h2 data-reveal>Ready to build something <em>extraordinary</em>?</h2>
-    <p data-reveal>Tell us where you want to go. We'll bring the craft, the code and the color grade. First discovery call is on us.</p>
-    <div class="cta-row" data-reveal>
-      <a class="btn btn-solid" href="mailto:hello@knootix.com">Start a project</a>
-      <a class="btn btn-ghost" href="https://wa.me/923000000000" target="_blank" rel="noopener">Chat on WhatsApp</a>
+    <div class="cta-grid">
+      <div class="cta-copy">
+        <h2 data-reveal>Ready to build something <em>extraordinary</em>?</h2>
+        <p data-reveal>Tell us where you want to go. We'll bring the craft, the code and the color grade. First discovery call is on us.</p>
+        <div class="cta-row" data-reveal>
+          <a class="btn btn-solid" href="mailto:hello@knootix.com">Start a project</a>
+          <a class="btn btn-ghost" href="https://wa.me/923000000000" target="_blank" rel="noopener">Chat on WhatsApp</a>
+        </div>
+      </div>
+      <div class="term" data-reveal style="--d:.15s" aria-hidden="true">
+        <div class="term-bar">
+          <span class="term-dot"></span><span class="term-dot"></span><span class="term-dot g"></span>
+          <span class="term-url">knootix.studio · deploy log</span>
+        </div>
+        <div class="term-body" id="termBody"></div>
+      </div>
     </div>
   </section>
 </main>
@@ -734,7 +725,7 @@
     a.addEventListener("click", function(){ document.body.classList.remove("menu-open"); menuBtn.setAttribute("aria-expanded","false"); });
   });
 
-  /* ---------- lemniscate geometry (the infinity oo) ---------- */
+  /* ---------- lemniscate geometry (the infinity oo in the wordmark) ---------- */
   function lemniscateD(cx, cy, a, steps){
     var d = "";
     for(var i=0;i<steps;i++){
@@ -751,50 +742,65 @@
     $$(".lem", svg).forEach(function(p){ p.setAttribute("d", d); });
   });
 
-  /* ---------- plotter draw loops ---------- */
-  var frames = [];
-  function easeInOut(p){ return p < .5 ? 4*p*p*p : 1 - Math.pow(-2*p+2,3)/2; }
-  function initDraw(svg, delay){
-    var mark = $(".loop-mark", svg);
-    var pen = $(".loop-pen", svg);
-    var L = mark.getTotalLength();
-    mark.setAttribute("stroke-dasharray", String(L));
-    var T = 7.5, DRAW = 2.6, HOLD = 4.2;
-    frames.push(function(t){
-      var tt = (t*0.001 + delay) % T;
-      if(tt < DRAW){
-        var e = easeInOut(tt/DRAW);
-        mark.setAttribute("stroke-dashoffset", String(L*(1-e)));
-        mark.setAttribute("opacity", "1");
-        var p = mark.getPointAtLength(L*e);
-        pen.setAttribute("cx", p.x.toFixed(1));
-        pen.setAttribute("cy", p.y.toFixed(1));
-        pen.setAttribute("opacity", "1");
-      }else if(tt < DRAW+HOLD){
-        mark.setAttribute("stroke-dashoffset", "0");
-        mark.setAttribute("opacity", "1");
-        pen.setAttribute("opacity", "0");
-      }else{
-        var f = (tt-DRAW-HOLD)/(T-DRAW-HOLD);
-        mark.setAttribute("stroke-dashoffset", "0");
-        mark.setAttribute("opacity", String(1-f));
-        pen.setAttribute("opacity", "0");
-      }
+  /* ---------- deploy log terminal ---------- */
+  (function(){
+    var body = $("#termBody");
+    if(!body) return;
+    var lines = [
+      '<span class="t-p">$</span> knootix deploy',
+      '<span class="t-dim">compiling identity</span> ………… <span class="t-ok">done</span>',
+      '<span class="t-dim">tuning motion timing</span> ……… <span class="t-ok">done</span>',
+      '<span class="t-dim">lighthouse audit</span> …………… <span class="t-ok">99 / 100</span>',
+      '<span class="t-dim">shipping to edge</span> ………… <span class="t-ok">live in 10 countries</span>',
+      '<span class="t-ok">✓</span> your project could be next'
+    ];
+    var els = lines.map(function(html){
+      var div = document.createElement("div");
+      div.className = "term-line";
+      div.innerHTML = html;
+      body.appendChild(div);
+      return div;
     });
-  }
-  initDraw($(".loop-hero"), 0.6);
-  initDraw($(".loop-cta"), 3.4);
-  if(reduced){
-    $$(".loop-mark").forEach(function(m){ m.setAttribute("stroke-dashoffset","0"); m.setAttribute("opacity","1"); });
-  }else{
-    var start = null;
-    (function tick(ts){
-      if(start===null) start = ts;
-      var t = ts - start;
-      for(var i=0;i<frames.length;i++) frames[i](t);
-      requestAnimationFrame(tick);
-    })(0);
-  }
+    var caret = document.createElement("span");
+    caret.className = "caret";
+    var shown = 0, timer = null;
+    function placeCaret(){
+      if(shown === 0){ els[0].appendChild(caret); return; }
+      els[Math.min(shown, els.length) - 1].appendChild(caret);
+    }
+    function step(){
+      if(shown < els.length){
+        els[shown].classList.add("on");
+        shown++;
+        placeCaret();
+        timer = setTimeout(step, shown === 1 ? 700 : 550);
+      }else{
+        timer = setTimeout(reset, 3200);
+      }
+    }
+    function reset(){
+      shown = 0;
+      els.forEach(function(e){ e.classList.remove("on"); });
+      placeCaret();
+      timer = setTimeout(step, 600);
+    }
+    if(reduced){
+      els.forEach(function(e){ e.classList.add("on"); });
+      els[els.length-1].appendChild(caret);
+      caret.style.animation = "none";
+    }else{
+      var ioT = new IntersectionObserver(function(entries){
+        entries.forEach(function(e){
+          if(e.isIntersecting){
+            ioT.disconnect();
+            placeCaret();
+            timer = setTimeout(step, 500);
+          }
+        });
+      }, {threshold:.4});
+      ioT.observe(body);
+    }
+  })();
 
   /* ---------- marquees ---------- */
   var services = ["Brand identity","Web development","Video editing","Graphic design","Photography","Motion & 3D"];
